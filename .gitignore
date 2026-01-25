@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Project specific
+music/
+*.mp3
+*.wav
+texts/
+risen_like_hymn.wav
+temple_hymn.mp3
+temple_organ_hymn.mp3
+
+# Experiments and temporary files
+exp/
+stupidexperiments/
+NewPseudoOS/
