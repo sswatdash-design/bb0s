@@ -9,9 +9,7 @@ import scrollart
 import webbrowser
 
 sys.set_int_max_str_digits(100000000)
-# System Context Initialization
 def init_system_context():
-    """Initialize and return the system state dictionary."""
     return {
         "mdic": {
             "/": {
@@ -23,7 +21,7 @@ def init_system_context():
             }
         },
         "current_path": "/",
-        "shutdown": False,  # Global shutdown flag
+        "shutdown": False,
         "gnlin": {
             1: "BBOS stands for Basic Build Operating software \n",
             2: "Entirety of this os is built through sheer python. \n",
@@ -36,7 +34,7 @@ def init_system_context():
     }
 
 def get_current_dir_content(ctx):
-    """Retrieve content of the current directory from the context."""
+   
     if ctx["current_path"] == "/":
         return ctx["mdic"]["/"]
     else:
@@ -45,9 +43,7 @@ def get_current_dir_content(ctx):
              return ctx["mdic"]["/"][ctx["current_path"]]
         return {}
 
-# Command Functions
 def cmd_help(ctx, args):
-    """Show help menu."""
     print("Choose: \n","Cmds \n","General Info (gnlin)")
     t = input(">> ")
     if t == "Cmds":
@@ -57,12 +53,10 @@ def cmd_help(ctx, args):
             print(val)
 
 def cmd_show(ctx, args):
-    """Show files (%sw)."""
     content = get_current_dir_content(ctx)
     print(list(content.keys()))
 
 def cmd_priority(ctx, args):
-    """Change directory (%pr)."""
     target = None
     if len(args) > 0:
         target = args[0]
@@ -77,7 +71,6 @@ def cmd_priority(ctx, args):
         print("directory not found")
 
 def cmd_realfs(ctx, args):
-    """Open real file system."""
     print("Launching Real File System...")
     filewsys.run_file_system()
 
@@ -228,11 +221,8 @@ def randomsoundgen(ctx, args):
     duration = 100  # Set Duration To 1000 ms == 1 second
 
 def typing_test(ctx, args):
-    """Words per minute typing test - uses embedded lyrics."""
     import random
     
-    # PASTE YOUR LYRICS HERE (one line per line in the multiline string)
-    # Replace this example text with your actual lyrics from beatles_lyrics.txt
     LYRICS_TEXT = """Long awaits my journey,
     or is it to be seen as a fantasy?
     Future is moving past me;
@@ -718,7 +708,6 @@ def typing_test(ctx, args):
     input()
 
 def simple_sudoku(ctx, args):
-    """Simple Sudoku puzzle generator - easy to understand code!"""
     import random
     
     # Simple way to make a valid Sudoku: start with a basic pattern and shift it
@@ -891,7 +880,6 @@ def simple_sudoku(ctx, args):
         simple_sudoku(ctx, args)
 
 def screensaver(ctx, args):
-    """Screensaver with scrollart animations - runs until you press Enter or z"""
     import random
     import msvcrt
     
@@ -957,7 +945,6 @@ def screensaver(ctx, args):
         time.sleep(0.5)
 
 def easter_egg(ctx, args):
-    """Secret easter egg command - displays random messages or opens videos!"""
     import random
     
     # Two text messages (already filled by user)
@@ -1003,7 +990,6 @@ def easter_egg(ctx, args):
         """
     ]
     
-    # List of YouTube URLs - ADD YOUR OWN URLS HERE!
     youtube_urls = [
         "https://www.youtube.com/watch?v=dQw4w9WgXcQ",  # Placeholder 1
         "https://www.youtube.com/watch?v=9bZkp7q19f0",  # Placeholder 2
@@ -1046,7 +1032,6 @@ def easter_egg(ctx, args):
         input()
 
 def physics_calc(ctx, args):
-    """Physics calculator for projectile motion and fluid dynamics."""
     import math
     
     while True:
@@ -1253,12 +1238,8 @@ def physics_calc(ctx, args):
             time.sleep(1)
 
 def base_converter(ctx, args):
-    """Number base converter - Binary, Decimal, Hexadecimal, Octal."""
-    
-    # Simple helper functions - easy to understand!
     
     def binary_to_decimal(binary_str):
-        """Convert binary string to decimal - simple multiplication and addition"""
         decimal = 0
         power = 0
         # Read from right to left
@@ -1269,7 +1250,6 @@ def base_converter(ctx, args):
         return decimal
     
     def decimal_to_binary(decimal_num):
-        """Convert decimal to binary - keep dividing by 2"""
         if decimal_num == 0:
             return "0"
         
@@ -1281,7 +1261,6 @@ def base_converter(ctx, args):
         return binary
     
     def decimal_to_hex(decimal_num):
-        """Convert decimal to hexadecimal"""
         if decimal_num == 0:
             return "0"
         
@@ -1295,7 +1274,6 @@ def base_converter(ctx, args):
         return hex_result
     
     def hex_to_decimal(hex_str):
-        """Convert hexadecimal to decimal"""
         hex_values = {
             '0': 0, '1': 1, '2': 2, '3': 3, '4': 4,
             '5': 5, '6': 6, '7': 7, '8': 8, '9': 9,
@@ -1311,7 +1289,6 @@ def base_converter(ctx, args):
         return decimal
     
     def decimal_to_octal(decimal_num):
-        """Convert decimal to octal"""
         if decimal_num == 0:
             return "0"
         
@@ -1323,7 +1300,6 @@ def base_converter(ctx, args):
         return octal
     
     def octal_to_decimal(octal_str):
-        """Convert octal to decimal"""
         decimal = 0
         power = 0
         
@@ -1457,7 +1433,7 @@ def base_converter(ctx, args):
         input("\nhit enter when ready...")
 
 def clear_terminal(ctx, args):
-    """Clears the terminal screen."""
+    #i rarely used this as i added it way later so who cares
     os.system("cls")
 
 def god(ctx, args):
@@ -1556,7 +1532,7 @@ def fsys(ctx,args):
     import random
     import ctypes
     scores = []
-    # Get the directory where the script is located, then go up one level to find music folder
+    # some fancy stuff i learnt from github (gets the work done lol xD)
     script_dir = os.path.dirname(os.path.abspath(__file__))
     music_dir = os.path.join(os.path.dirname(script_dir), "music")
     
@@ -1580,31 +1556,15 @@ def fsys(ctx,args):
     # Build absolute paths for all songs
     songs = [os.path.join(music_dir, song) for song in song_files]
 
-    # Play background music
-    # SND_ASYNC: play in background
-    # SND_LOOP: loop continuously
-    # Play music using MCI (Media Control Interface) for MP3 support
-    # This avoids external dependencies like playsound or pygame
-    def play_music(file_path):
-        # Enclose in quotes to handle spaces in filenames
-        alias = "mp3player"
-        cmd_close = f'close {alias}'
-        cmd_open = f'open "{file_path}" type mpegvideo alias {alias}'
-        cmd_play = f'play {alias} repeat'
-
-        # Close any currently playing file
-        ctypes.windll.winmm.mciSendStringW(cmd_close, None, 0, None)
-        # Open the new file
-        error = ctypes.windll.winmm.mciSendStringW(cmd_open, None, 0, None)
-        if error:
-            print(f"Error opening file: {error}")
-            return
-        # Play
-        ctypes.windll.winmm.mciSendStringW(cmd_play, None, 0, None)
-
-    current_song_index = 0
+    
+    import pygame
+    pygame.mixer.init()  # Start the music player
+    
+    radio = [0]
+    
     try:
-        play_music(songs[current_song_index])
+        pygame.mixer.music.load(songs[radio[0]])
+        pygame.mixer.music.play(-1)
     except Exception as e:
         print(f"Warning: Could not play background music: {e}")
     score = 0
@@ -1612,14 +1572,10 @@ def fsys(ctx,args):
         try:
 
             def clear_console():
-                """Clears the console screen."""
                 sys.stdout.write("\x1b[H")
 
-            # --- Constants & Configuration ---
             MAP_SIZE = 100
 
-            # --- Map Generation ---
-            # creating a simple map with borders and random obstacles
             world_map = []
             for _y_ in range(MAP_SIZE):
                 row_string = ""
@@ -1655,15 +1611,8 @@ def fsys(ctx,args):
             player_altitude = 0.5  # 0.5 is standard eye level
 
             def cast_ray(ray_angle):
-                """
-                Casts a ray from player position at the given angle.
-                Returns:
-                    distance (float): Distance to the wall hit
-                    hit_horizontal (bool): True if it hit a horizontal wall (or close enough distinction for shading)
-                """
                 curr_x, curr_y = player_x, player_y
 
-                # Ray marching step size
                 step_distance = 0.1
 
                 for _ in range(50):  # limit draw distance (max steps)
@@ -1686,7 +1635,6 @@ def fsys(ctx,args):
                 return 50, True
 
             def draw_minimap(screen_buffer):
-                """Draws a minimap overlay on the screen buffer."""
                 scale = 2  # Scale of the minimap pixels
                 view_size = 16  # Area size to show on minimap
 
@@ -1743,20 +1691,17 @@ def fsys(ctx,args):
                     screen_buffer[dir_y][dir_x] = "+"
 
             def draw_text_on_screen(screen_buffer, x, y, text):
-                """Helper to draw text onto the 2D character buffer."""
                 for i, char in enumerate(text):
                     if 0 <= x + i < len(screen_buffer[0]) and 0 <= y < len(screen_buffer):
                         screen_buffer[y][x + i] = char
 
-            # --- Screen Settings ---
             SCREEN_HEIGHT = 70
             FOV = math.pi / 3
             SCREEN_WIDTH = 225
 
-            sys.stdout.write("\x1b[2J")  # Clear entire screen initially
+            sys.stdout.write("\x1b[2J")
             half_screen_height = SCREEN_HEIGHT // 2
             started = False
-            # --- Main Loop ---
             while True:
                 # game over if collision with wall
                 if world_map[int(player_y)][int(player_x)] == "#":
@@ -1801,12 +1746,15 @@ def fsys(ctx,args):
                         player_pitch = min(player_pitch + 2.0, 100.0)
                     if key == "k":
                         player_pitch = max(player_pitch - 2.0, -100.0)
-                    # Radio controls
+                    # Radio: Press 'R' to change song
                     if key == "r":
-                        # Cycle to the next song
-                        current_song_index = (current_song_index + 1) % len(songs)
+                        radio[0] = radio[0] + 1  # Go to next song
+                        if radio[0] >= len(songs):  # If we're past the last song
+                            radio[0] = 0  # Go back to first song
                         try:
-                            play_music(songs[current_song_index])
+                            pygame.mixer.music.stop()  # Stop current song
+                            pygame.mixer.music.load(songs[radio[0]])  # Load new song
+                            pygame.mixer.music.play(-1)  # Play new song on loop
                         except Exception as e:
                             print(f"Radio Error: {e}")
                     # Exit key
@@ -1939,9 +1887,8 @@ def fsys(ctx,args):
             time.sleep(0.0001)
             continue
 
-# Registry of commands
-# Key: Command string
-# Value: Function to execute
+
+
 COMMANDS = {
     "help": cmd_help,
     "%sw": cmd_show,
@@ -1959,8 +1906,6 @@ COMMANDS = {
     "physics": physics_calc,
     "baseconv": base_converter
 }
-
-# Add description strings for help
 CMD_DESCRIPTIONS = {
     "%pr": "Priority or change directory",
     "%sw": "Show the files and folders in the current directory",
@@ -1981,13 +1926,13 @@ def parse_and_execute(ctx, user_input):
     if not parts:
         return
 
-    # Check for shutdown command
+
+
     if user_input.strip().lower() in ["shutdown", "z"]:
         ctx["shutdown"] = True
         print("System shutdown initiated...")
         return
 
-    # Try to find a command in the input
     cmd_func = None
     args = []
 
@@ -1999,13 +1944,15 @@ def parse_and_execute(ctx, user_input):
             cmd_func = COMMANDS[part]
             break
             
-    # If help check (contains "help")
+    # this is so stupid, i could have just made the cmd_func as help in check bruh
+
     if "help" in user_input:
          cmd_help(ctx, parts)
          return
 
+    #bbs ftw <3
+
     if found_cmd_name:
-        # Remove the command from args
         args = [p for p in parts if p != found_cmd_name]
         cmd_func(ctx, args)
     else:
@@ -2019,12 +1966,15 @@ def main():
         time.sleep(1)
         print(msg)
     os.system("cls")
+
+    '''behold my scrollart symbphonium or however the flip it is spelled lmao'''
     scrollart.ducklings(max_rows=70)
     scrollart.in_and_out(max_rows=100)
     scrollart.cube_wall(max_rows=70)
     scrollart.in_and_out(max_rows=100)
     scrollart.bundfc(max_rows=150)
     scrollart.forth_and_back(max_rows=100)
+
     os.system("cls")
     print("\n"*5)
     print(""" ▄▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄ 
@@ -2039,12 +1989,10 @@ def main():
 ▐░░░░░░░░░░▌ ▐░░░░░░░░░░▌ ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
  ▀▀▀▀▀▀▀▀▀▀   ▀▀▀▀▀▀▀▀▀▀   ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀ """.center(100))
     print("\n"*5)
-    # Initialize context as a dictionary
     ctx = init_system_context()
     
     while True:
         try:
-            # Check shutdown flag
             if ctx["shutdown"]:
                 print("\nShutting down BBOS...")
                 time.sleep(1)
@@ -2054,7 +2002,6 @@ def main():
             user_input = input(" >> ")
             parse_and_execute(ctx, user_input)
             
-            # Check shutdown flag after command execution
             if ctx["shutdown"]:
                 print("\nShutting down BBOS...")
                 time.sleep(1)
@@ -2068,4 +2015,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
