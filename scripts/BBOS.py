@@ -1509,6 +1509,7 @@ def fsys(ctx,args):
                         if scores:
                             print(f"Highest Score This Session: {max(scores)}")
                         time.sleep(1)
+                        pygame.mixer.music.stop()  
                         return  # Exit the fsys function completely
                    
                     if key == "z":
@@ -1533,6 +1534,7 @@ def fsys(ctx,args):
 ▐░░░░░░░░░░▌ ▐░░░░░░░░░░▌ ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
  ▀▀▀▀▀▀▀▀▀▀   ▀▀▀▀▀▀▀▀▀▀   ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀ """.center(100))
                         print("\n" * 5)
+                        pygame.mixer.music.stop()  
                         return  # Exit and return to BBOS
 
                 
