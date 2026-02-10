@@ -1,1 +1,8 @@
 scrollart
+os
+time
+sys
+pygame
+winsound
+webbrowser
+msvcrt
