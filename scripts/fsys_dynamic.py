@@ -9,6 +9,9 @@ import scrollart
 import webbrowser
 
 sys.set_int_max_str_digits(100000000)
+
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
 def init_system_context():
     return {
         "mdic": {
@@ -41,6 +44,7 @@ def get_current_dir_content(ctx):
         # Check if current_path is a valid key in root
         if ctx["current_path"] in ctx["mdic"]["/"]:
              return ctx["mdic"]["/"][ctx["current_path"]]
+
         return {}
 
 def cmd_help(ctx, args):
@@ -189,7 +193,7 @@ def fibcalc(ctx, args):
         elif choice == "z":
             print("going back...")
             scrollart.math_func(max_rows=150)
-            os.system("cls")
+            clear_screen()
             print("\n" * 5)
             print(""" ▄▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄ 
 ▐░░░░░░░░░░▌ ▐░░░░░░░░░░▌ ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
@@ -217,9 +221,8 @@ def randomsoundgen(ctx, args):
 
     print(l)
 
-    frequency = 1800  # Set Frequency To 2500 Hertz
-    duration = 100  # Set Duration To 1000 ms == 1 second
-
+    frequency = 1800
+    duration = 100
 def typing_test(ctx, args):
     import random
     
@@ -569,7 +572,6 @@ def typing_test(ctx, args):
     Like, "I love you"
     I love you"""
     
-    # Parse lyrics into lines
     all_lines = [line.strip() for line in LYRICS_TEXT.strip().split('\n') if line.strip()]
     
     if len(all_lines) < 3:
@@ -591,7 +593,7 @@ def typing_test(ctx, args):
     if choice == "z":
         print("going back...")
         scrollart.math_func(max_rows=150)
-        os.system("cls")
+        clear_screen()
         print("\n" * 5)
         print(""" ▄▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄ 
 ▐░░░░░░░░░░▌ ▐░░░░░░░░░░▌ ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
@@ -611,7 +613,6 @@ def typing_test(ctx, args):
         print("going back...")
         return
     
-    # Select random 3 consecutive lines
     max_start = len(all_lines) - 3
     start_line = random.randint(0, max_start)
     selected_lines = all_lines[start_line:start_line + 3]
@@ -630,7 +631,7 @@ def typing_test(ctx, args):
     
     start_time = time.time()
     
-    # Collect multi-line input
+
     print("(Type each line and press ENTER. Type 'DONE' on a new line when finished)\n")
     user_lines = []
     while True:
@@ -640,7 +641,7 @@ def typing_test(ctx, args):
         if line.lower() == "z":
             print("going back...")
             scrollart.math_func(max_rows=150)
-            os.system("cls")
+            clear_screen()
             print("\n" * 5)
             print(""" ▄▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄ 
 ▐░░░░░░░░░░▌ ▐░░░░░░░░░░▌ ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
@@ -662,12 +663,11 @@ def typing_test(ctx, args):
     end_time = time.time()
     user_input = "\n".join(user_lines)
     
-    # Calculate results
+
     time_taken = end_time - start_time
     words_typed = len(user_input.split())
     wpm = (words_typed / time_taken) * 60 if time_taken > 0 else 0
-    
-    # Calculate accuracy (line by line)
+
     correct_chars = 0
     total_chars = len(target_text)
     
@@ -677,7 +677,7 @@ def typing_test(ctx, args):
     
     accuracy = (correct_chars / total_chars) * 100 if total_chars > 0 else 0
     
-    # Word-level accuracy
+
     target_words = target_text.split()
     typed_words = user_input.split()
     correct_words = sum(1 for i in range(min(len(target_words), len(typed_words))) 
@@ -705,179 +705,8 @@ def typing_test(ctx, args):
     print("="*60 + "\n")
     
     print("Press ENTER to continue...")
-    input()
 
-def simple_sudoku(ctx, args):
-    import random
-    
-    # Simple way to make a valid Sudoku: start with a basic pattern and shift it
-    # This is a valid completed Sudoku grid
-    base_grid = [
-        [1, 2, 3, 4, 5, 6, 7, 8, 9],
-        [4, 5, 6, 7, 8, 9, 1, 2, 3],
-        [7, 8, 9, 1, 2, 3, 4, 5, 6],
-        [2, 3, 4, 5, 6, 7, 8, 9, 1],
-        [5, 6, 7, 8, 9, 1, 2, 3, 4],
-        [8, 9, 1, 2, 3, 4, 5, 6, 7],
-        [3, 4, 5, 6, 7, 8, 9, 1, 2],
-        [6, 7, 8, 9, 1, 2, 3, 4, 5],
-        [9, 1, 2, 3, 4, 5, 6, 7, 8]
-    ]
-    
-    # Make a copy to work with
-    puzzle = [row[:] for row in base_grid]
-    
-    # RANDOMIZE THE GRID (while keeping it valid!)
-    # This makes every puzzle different
-    
-    # Step 1: Swap rows within each 3-row band (keeps it valid)
-    for band in range(3):  # 3 bands (0-2, 3-5, 6-8)
-        start_row = band * 3
-        rows = [start_row, start_row + 1, start_row + 2]
-        random.shuffle(rows)  # Shuffle the row indices
-        
-        # Apply the shuffle
-        temp_band = [puzzle[rows[0]][:], puzzle[rows[1]][:], puzzle[rows[2]][:]]
-        puzzle[start_row] = temp_band[0]
-        puzzle[start_row + 1] = temp_band[1]
-        puzzle[start_row + 2] = temp_band[2]
-    
-    # Step 2: Swap columns within each 3-column band (keeps it valid)
-    for band in range(3):  # 3 bands (0-2, 3-5, 6-8)
-        start_col = band * 3
-        cols = [start_col, start_col + 1, start_col + 2]
-        random.shuffle(cols)  # Shuffle the column indices
-        
-        # Apply the shuffle
-        for row in range(9):
-            temp_cols = [puzzle[row][cols[0]], puzzle[row][cols[1]], puzzle[row][cols[2]]]
-            puzzle[row][start_col] = temp_cols[0]
-            puzzle[row][start_col + 1] = temp_cols[1]
-            puzzle[row][start_col + 2] = temp_cols[2]
-    
-    # Step 3: Randomly remap the numbers (1->5, 2->7, etc.)
-    # This creates even more variation!
-    numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-    shuffled_numbers = numbers[:]
-    random.shuffle(shuffled_numbers)
-    
-    # Create mapping: old number -> new number
-    number_map = {}
-    for i in range(9):
-        number_map[numbers[i]] = shuffled_numbers[i]
-    
-    # Apply the number mapping
-    for row in range(9):
-        for col in range(9):
-            puzzle[row][col] = number_map[puzzle[row][col]]
-    
-    # Keep the solution before removing cells
-    solution = [row[:] for row in puzzle]
-    
-    # Remove some numbers to create the puzzle (0 means empty)
-    # Remove 40 numbers randomly (adjust for difficulty)
-    cells_to_remove = 40
-    removed = 0
-    
-    while removed < cells_to_remove:
-        row = random.randint(0, 8)
-        col = random.randint(0, 8)
-        
-        # Only remove if not already removed
-        if puzzle[row][col] != 0:
-            puzzle[row][col] = 0
-            removed += 1
-    
-    print("\n" + "="*60)
-    print(" "*20 + "SIMPLE SUDOKU")
-    print("="*60)
-    print("\nHere's your Sudoku puzzle!")
-    print("(0 means empty cell - you need to fill it in)\n")
-    
-    # Display the puzzle nicely
-    print("    1 2 3   4 5 6   7 8 9")
-    print("  +" + "-"*23 + "+")
-    
-    for i in range(9):
-        if i > 0 and i % 3 == 0:
-            print("  |" + "-"*7 + "+" + "-"*7 + "+" + "-"*7 + "|")
-        
-        row_str = f"{i+1} | "
-        for j in range(9):
-            if j > 0 and j % 3 == 0:
-                row_str += "| "
-            
-            if puzzle[i][j] == 0:
-                row_str += ". "
-            else:
-                row_str += f"{puzzle[i][j]} "
-        
-        row_str += "|"
-        print(row_str)
-    
-    print("  +" + "-"*23 + "+")
-    
-    # Show solution option
-    print("\nOptions:")
-    print("  1. See solution")
-    print("  2. Generate new puzzle")
-    print("  z. Return to BBOS")
-    print("  exit. Return to BBOS")
-    
-    choice = input("\n>> ").strip().lower()
-    
-    if choice == "z":
-        print("going back...")
-        scrollart.math_func(max_rows=150)
-        os.system("cls")
-        print("\n" * 5)
-        print(""" ▄▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄ 
-▐░░░░░░░░░░▌ ▐░░░░░░░░░░▌ ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
-▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀▀▀ 
-▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌          
-▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌▐░▌       ▐░▌▐░█▄▄▄▄▄▄▄▄▄ 
-▐░░░░░░░░░░▌ ▐░░░░░░░░░░▌ ▐░▌       ▐░▌▐░░░░░░░░░░░▌
-▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░▌       ▐░▌ ▀▀▀▀▀▀▀▀▀█░▌
-▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌          ▐░▌
-▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌ ▄▄▄▄▄▄▄▄▄█░▌
-▐░░░░░░░░░░▌ ▐░░░░░░░░░░▌ ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
- ▀▀▀▀▀▀▀▀▀▀   ▀▀▀▀▀▀▀▀▀▀   ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀ """.center(100))
-        print("\n" * 5)
-        return
-    
-    if choice == "exit":
-        print("going back...")
-        return
-    
-    if choice == "1":
-        # Show the solution
-        print("\n" + "="*60)
-        print(" "*20 + "SOLUTION")
-        print("="*60 + "\n")
-        
-        print("    1 2 3   4 5 6   7 8 9")
-        print("  +" + "-"*23 + "+")
-        
-        for i in range(9):
-            if i > 0 and i % 3 == 0:
-                print("  |" + "-"*7 + "+" + "-"*7 + "+" + "-"*7 + "|")
-            
-            row_str = f"{i+1} | "
-            for j in range(9):
-                if j > 0 and j % 3 == 0:
-                    row_str += "| "
-                row_str += f"{solution[i][j]} "  # Use solution instead of base_grid
-            
-            row_str += "|"
-            print(row_str)
-        
-        print("  +" + "-"*23 + "+")
-        print("\nhit enter when ready...")
-        input()
-    
-    elif choice == "2":
-        # Generate new puzzle by calling the function again
-        simple_sudoku(ctx, args)
+    input()
 
 def screensaver(ctx, args):
     import random
@@ -886,32 +715,32 @@ def screensaver(ctx, args):
     print("\n" + "="*60)
     print(" "*20 + "SCREENSAVER MODE")
     print("="*60)
+
     print("\nStarting screensaver...")
+
     print("Press ENTER or 'z' to exit\n")
     
     time.sleep(2)
-    
-    # Pick ONE animation at the start and stick with it
+ 
     animation = random.choice(['math_func', 'ducklings'])
     
     print(f"Animation: {animation}\n")
+
     time.sleep(1)
-    
-    # Keep running the SAME animation until user presses a key
+
     while True:
-        # Run the chosen animation
         if animation == 'math_func':
             scrollart.math_func(max_rows=50)
         else:
             scrollart.ducklings(max_rows=50)
         
-        # Check if user pressed a key
+
         if msvcrt.kbhit():
             key = msvcrt.getch().decode().lower()
-            if key == 'z':  # z key
+            if key == 'z':
                 print("\n\ngoing back...")
                 scrollart.math_func(max_rows=150)
-                os.system("cls")
+                clear_screen()
                 print("\n" * 5)
                 print(""" ▄▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄ 
 ▐░░░░░░░░░░▌ ▐░░░░░░░░░░▌ ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
@@ -926,10 +755,10 @@ def screensaver(ctx, args):
  ▀▀▀▀▀▀▀▀▀▀   ▀▀▀▀▀▀▀▀▀▀   ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀ """.center(100))
                 print("\n" * 5)
                 break
-            elif key == '\r':  # Enter key
+            elif key == '\r': 
                 print("\n\ngoing back...")
                 scrollart.math_func(max_rows=150)
-                os.system("cls")
+                clear_screen()
                 print("\n" * 5)
                 print(""" ▄▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄ 
 ▐░░░░░░░░░░▌ ▐░░░░░░░░░░▌ ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
@@ -941,13 +770,13 @@ def screensaver(ctx, args):
 ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌          ▐░▌
 ▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌ ▄▄▄▄▄▄▄▄▄█░▌
 ▐░░░░░░░░░░▌ ▐░░░░░░░░░░▌ ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌""")
-        # Small delay before next loop
+    
         time.sleep(0.5)
 
 def easter_egg(ctx, args):
     import random
     
-    # Two text messages (already filled by user)
+  
     text_messages = [
         """
         HATE. LET ME TELL YOU HOW MUCH I'VE COME TO HATE YOU SINCE I BEGAN TO LIVE. 
@@ -991,31 +820,31 @@ def easter_egg(ctx, args):
     ]
     
     youtube_urls = [
-        "https://www.youtube.com/watch?v=dQw4w9WgXcQ",  # Placeholder 1
-        "https://www.youtube.com/watch?v=9bZkp7q19f0",  # Placeholder 2
-        "https://youtu.be/d6mGHwHMB5s?si=WMVpNDjkwPjYiAzG",  # Placeholder 3
-        "https://www.youtube.com/watch?v=ZZ5LpwO-An4",  # Placeholder 4
+        "https://www.youtube.com/watch?v=dQw4w9WgXcQ", 
+        "https://www.youtube.com/watch?v=9bZkp7q19f0",  
+        "https://youtu.be/d6mGHwHMB5s?si=WMVpNDjkwPjYiAzG",  
+        "https://www.youtube.com/watch?v=ZZ5LpwO-An4",  
         "https://www.youtube.com/watch?v=eBGIQ7ZuuiU",
         "https://youtu.be/J6RH4rJjwFc?si=PrRmS24SLGT8yy-u",
         "https://youtu.be/7pnzR6kD2Q4?si=vKFQ24eRW1DC9qsh",
         "https://youtu.be/7pnzR6kD2Q4?si=vKFQ24eRW1DC9qsh",
         "https://youtu.be/7pnzR6kD2Q4?si=vKFQ24eRW1DC9qsh",
         "https://youtu.be/7pnzR6kD2Q4?si=vKFQ24eRW1DC9qsh",
-        "https://youtu.be/7pnzR6kD2Q4?si=vKFQ24eRW1DC9qsh"   # Placeholder 5
+        "https://youtu.be/7pnzR6kD2Q4?si=vKFQ24eRW1DC9qsh"   
     ]
     
-    # Randomly choose: text (60% chance) or video (40% chance)
+
     action = random.choices(['text', 'video'], weights=[60, 40])[0]
     
     if action == 'text':
-        # Display random text message
+
         selected_message = random.choice(text_messages)
         print(selected_message)
         print("\nhit enter when ready...")
         input()
     
     else:
-        # Open random YouTube video
+
         selected_url = random.choice(youtube_urls)
         print("\n" + "="*60)
         print("Opening a surprise video in your browser...")
@@ -1035,7 +864,7 @@ def physics_calc(ctx, args):
     import math
     
     while True:
-        os.system("cls")
+        clear_screen()
         print("\n" + "="*60)
         print(" "*15 + "PHYSICS CALCULATOR")
         print("="*60)
@@ -1050,7 +879,9 @@ def physics_calc(ctx, args):
         if choice == "z" or choice == "exit":
             print("going back...")
             scrollart.math_func(max_rows=150)
-            os.system("cls")
+            clear_screen()
+
+
             print("\n" * 5)
             print(""" ▄▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄ 
 ▐░░░░░░░░░░▌ ▐░░░░░░░░░░▌ ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
@@ -1066,9 +897,9 @@ def physics_calc(ctx, args):
             print("\n" * 5)
             return
         
-        # PROJECTILE MOTION
+
         if choice == "1":
-            os.system("cls")
+            clear_screen()
             print("\n" + "="*60)
             print(" "*15 + "PROJECTILE MOTION")
             print("="*60)
@@ -1087,22 +918,20 @@ def physics_calc(ctx, args):
             try:
                 v0 = float(input("\nInitial velocity (m/s): "))
                 angle = float(input("Launch angle (degrees): "))
-                g = 9.8  # gravity
+                g = 9.8 
                 
-                # Convert angle to radians
+
                 angle_rad = math.radians(angle)
-                
-                # Calculate components
                 v0x = v0 * math.cos(angle_rad)
                 v0y = v0 * math.sin(angle_rad)
                 
-                # Time of flight
+
                 t_flight = (2 * v0y) / g
                 
-                # Maximum height
+
                 h_max = (v0y ** 2) / (2 * g)
                 
-                # Range
+
                 range_x = v0x * t_flight
                 
                 print("\n" + "-"*60)
@@ -1133,9 +962,9 @@ def physics_calc(ctx, args):
             
             input("\nhit enter...")
         
-        # FLUID DYNAMICS
+
         elif choice == "2":
-            os.system("cls")
+            clear_screen()
             print("\n" + "="*60)
             print(" "*15 + "FLUID DYNAMICS")
             print("="*60)
@@ -1196,7 +1025,7 @@ def physics_calc(ctx, args):
                         print("-"*60)
                 
                 elif sub_choice == "3":
-                    # Bernoulli's equation (simplified)
+
                     print("\nSimplified Bernoulli for horizontal flow:")
                     print("P₁ + ½ρv₁² = P₂ + ½ρv₂²")
                     
@@ -1205,7 +1034,7 @@ def physics_calc(ctx, args):
                     v1 = float(input("Velocity at point 1 (m/s): "))
                     v2 = float(input("Velocity at point 2 (m/s): "))
                     
-                    # Calculate P2
+
                     p2 = p1 + 0.5 * rho * (v1**2 - v2**2)
                     
                     print("\n" + "-"*60)
@@ -1214,7 +1043,7 @@ def physics_calc(ctx, args):
                     print("-"*60)
                 
                 elif sub_choice == "4":
-                    # Pressure at depth
+
                     rho = float(input("\nFluid density (kg/m³, water=1000): "))
                     g = 9.8
                     h = float(input("Depth (m): "))
@@ -1238,104 +1067,90 @@ def physics_calc(ctx, args):
             time.sleep(1)
 
 def base_converter(ctx, args):
+    #ty shaswat
     
-    def binary_to_decimal(binary_str):
-        decimal = 0
-        power = 0
-        # Read from right to left
-        for digit in reversed(binary_str):
-            if digit == '1':
-                decimal = decimal + (2 ** power)  # Add power of 2
-            power = power + 1
-        return decimal
-    
-    def decimal_to_binary(decimal_num):
-        if decimal_num == 0:
-            return "0"
-        
-        binary = ""
-        while decimal_num > 0:
-            remainder = decimal_num % 2  # Get remainder
-            binary = str(remainder) + binary  # Add to front
-            decimal_num = decimal_num // 2  # Integer division
-        return binary
-    
-    def decimal_to_hex(decimal_num):
-        if decimal_num == 0:
-            return "0"
-        
-        hex_digits = "0123456789ABCDEF"
-        hex_result = ""
-        
-        while decimal_num > 0:
-            remainder = decimal_num % 16
-            hex_result = hex_digits[remainder] + hex_result
-            decimal_num = decimal_num // 16
-        return hex_result
-    
-    def hex_to_decimal(hex_str):
-        hex_values = {
-            '0': 0, '1': 1, '2': 2, '3': 3, '4': 4,
-            '5': 5, '6': 6, '7': 7, '8': 8, '9': 9,
-            'A': 10, 'B': 11, 'C': 12, 'D': 13, 'E': 14, 'F': 15
-        }
-        
-        decimal = 0
-        power = 0
-        
-        for digit in reversed(hex_str.upper()):
-            decimal = decimal + (hex_values[digit] * (16 ** power))
-            power = power + 1
-        return decimal
-    
-    def decimal_to_octal(decimal_num):
-        if decimal_num == 0:
-            return "0"
-        
-        octal = ""
-        while decimal_num > 0:
-            remainder = decimal_num % 8
-            octal = str(remainder) + octal
-            decimal_num = decimal_num // 8
-        return octal
-    
-    def octal_to_decimal(octal_str):
-        decimal = 0
-        power = 0
-        
-        for digit in reversed(octal_str):
-            decimal = decimal + (int(digit) * (8 ** power))
-            power = power + 1
-        return decimal
-    
+    def b2d(A: str):
+        y, ans, temp, l1 = 2, 0, 0, []
+        for j in range(len(A)):
+            l1.append(y ** j)
+        for k in range(len(A) - 1, -1, -1):
+            ans += int(A[k]) * l1[temp]
+            temp += 1
+        return ans
+
+    def o2d(A: str):
+        y, ans, temp, l1 = 8, 0, 0, []
+        for j in range(len(A)):
+            l1.append(y ** j)
+        for k in range(len(A) - 1, -1, -1):
+            ans += int(A[k]) * l1[temp]
+            temp += 1
+        return ans
+
+    def h2d(A: str):
+        y, temp, ans, l1 = 16, 0, 0, []
+        d = {"A": 10, "B": 11, "C": 12, "D": 13, "E": 14, "F": 15}
+        for j in range(len(A)):
+            l1.append(y ** j)
+        for k in range(len(A) - 1, -1, -1):
+            if A[k].isalpha():
+                ans += d[A[k].upper()] * l1[temp]
+            else:
+                ans += int(A[k]) * l1[temp]
+            temp += 1
+        return ans
+
+    def d2b(n):
+        z, l = 2, []
+        while n >= 1:
+            l.append(n % z)
+            n //= z
+        out = ""
+        for i in range(len(l) - 1, -1, -1):
+            out += str(l[i])
+        return out
+
+    def d2o(n):
+        z, l = 8, []
+        while n >= 1:
+            l.append(n % z)
+            n //= z
+        out = ""
+        for i in range(len(l) - 1, -1, -1):
+            out += str(l[i])
+        return out
+
+    def d2h(n):
+        z, l, o = 16, [], ""
+        while n >= 1:
+            l.append(n % z)
+            n //= z
+        d2 = {10: "A", 11: "B", 12: "C", 13: "D", 14: "E", 15: "F"}
+        for i in range(len(l) - 1, -1, -1):
+            o += d2[l[i]] if l[i] >= 10 else str(l[i])
+        return o
+
+    # Main loop
     while True:
-        os.system("cls")
-        print("\n" + "="*60)
-        print(" "*15 + "NUMBER BASE CONVERTER")
-        print("="*60)
-        print("\nConvert between:")
-        print("1. Binary (base 2)")
-        print("2. Decimal (base 10)")
-        print("3. Hexadecimal (base 16)")
-        print("4. Octal (base 8)")
-        print("\nz. Return to BBOS")
-        print("exit. Return to BBOS")
-        
-        print("\n" + "-"*60)
-        print("Select CONVERSION TYPE:\n")
-        print("Examples:")
-        print("  1->2  : Binary to Decimal")
-        print("  2->3  : Decimal to Hexadecimal")
-        print("  3->1  : Hexadecimal to Binary")
-        print("  2->4  : Decimal to Octal")
-        print("-"*60)
-        
-        choice = input("\nEnter conversion (e.g., 1->2): ").strip().lower()
-        
-        if choice == "z" or choice == "exit":
+        clear_screen()
+
+        print("BC program")
+        base = input("enter base (b/o/d/h): ").lower()
+        num = input("enter number: ")
+
+        if base == "b":
+            d = b2d(num)
+        elif base == "o":
+            d = o2d(num)
+        elif base == "h":
+            d = h2d(num)
+
+        elif base == "d":
+            d = int(num)
+        elif base == "z" or base == "exit":
             print("going back...")
             scrollart.math_func(max_rows=150)
-            os.system("cls")
+            clear_screen()
             print("\n" * 5)
             print(""" ▄▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄ 
 ▐░░░░░░░░░░▌ ▐░░░░░░░░░░▌ ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
@@ -1350,91 +1165,20 @@ def base_converter(ctx, args):
  ▀▀▀▀▀▀▀▀▀▀   ▀▀▀▀▀▀▀▀▀▀   ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀ """.center(100))
             print("\n" * 5)
             return
-        
-        if "->" not in choice:
-            print("\nwrong format bro! Use format like: 1->2")
-            time.sleep(2)
+        else:
+            print("Invalid base")
             continue
-        
-        try:
-            from_base, to_base = choice.split("->")
-            from_base = from_base.strip()
-            to_base = to_base.strip()
-            
-            # Simple base names
-            base_names = {
-                "1": "Binary",
-                "2": "Decimal",
-                "3": "Hexadecimal",
-                "4": "Octal"
-            }
-            
-            if from_base not in base_names or to_base not in base_names:
-                print("\nnah use 1,2,3, or 4! Use 1, 2, 3, or 4")
-                time.sleep(2)
-                continue
-            
-            from_name = base_names[from_base]
-            to_name = base_names[to_base]
-            
-            print(f"\nConverting from {from_name} to {to_name}")
-            
-            # Get input based on source base
-            if from_base == "1":
-                value = input("Enter Binary number (e.g., 1010): ").strip()
-            elif from_base == "2":
-                value = input("Enter Decimal number (e.g., 255): ").strip()
-            elif from_base == "3":
-                value = input("Enter Hexadecimal number (e.g., FF): ").strip().upper()
-            elif from_base == "4":
-                value = input("Enter Octal number (e.g., 377): ").strip()
-            
-            # STEP 1: Convert input to decimal (intermediate step)
-            if from_base == "1":  # Binary to Decimal
-                decimal = binary_to_decimal(value)
-            elif from_base == "2":  # Already decimal
-                decimal = int(value)
-            elif from_base == "3":  # Hex to Decimal
-                decimal = hex_to_decimal(value)
-            elif from_base == "4":  # Octal to Decimal
-                decimal = octal_to_decimal(value)
-            
-            # STEP 2: Convert decimal to target base
-            if to_base == "1":  # Decimal to Binary
-                result = decimal_to_binary(decimal)
-            elif to_base == "2":  # Already decimal
-                result = str(decimal)
-            elif to_base == "3":  # Decimal to Hex
-                result = decimal_to_hex(decimal)
-            elif to_base == "4":  # Decimal to Octal
-                result = decimal_to_octal(decimal)
-            
-            print("\n" + "="*60)
-            print("CONVERSION RESULT:")
-            print("="*60)
-            print(f"Input  ({from_name}):  {value}")
-            print(f"Output ({to_name}): {result}")
-            
-            # Show all bases for reference
-            print("\n" + "-"*60)
-            print("All base representations:")
-            print("-"*60)
-            print(f"Binary:      {decimal_to_binary(decimal)}")
-            print(f"Octal:       {decimal_to_octal(decimal)}")
-            print(f"Decimal:     {decimal}")
-            print(f"Hexadecimal: {decimal_to_hex(decimal)}")
-            print("="*60)
-            
-        except (ValueError, KeyError) as e:
-            print(f"\n✗ nah that's wrong! Check your number format.")
-        except Exception as e:
-            print(f"\n✗ Error: {e}")
+
+        print("decimal:", d)
+        print("binary:", d2b(d))
+        print("octal:", d2o(d))
+        print("hexadecimal:", d2h(d))
         
         input("\nhit enter when ready...")
 
 def clear_terminal(ctx, args):
     #i rarely used this as i added it way later so who cares
-    os.system("cls")
+    clear_screen()
 
 def god(ctx, args):
     l = [
@@ -1504,7 +1248,7 @@ def god(ctx, args):
         elif x == "z":
             print("going back...")
             scrollart.math_func(max_rows=150)
-            os.system("cls")
+            clear_screen()
             print("\n" * 5)
             print(""" ▄▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄ 
 ▐░░░░░░░░░░▌ ▐░░░░░░░░░░▌ ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
@@ -1525,6 +1269,7 @@ def god(ctx, args):
 
 
 def fsys(ctx,args):
+    #used to look wayy better with the good ai written variable names and structures. unfortunately sir didn't allow it, so. :)
     import time
     import math
     import sys
@@ -1558,7 +1303,7 @@ def fsys(ctx,args):
 
     
     import pygame
-    pygame.mixer.init()  # Start the music player
+    pygame.mixer.init()  
     
     radio = [0]
     
@@ -1584,13 +1329,13 @@ def fsys(ctx,args):
                     if _x_ == 0 or _x_ == MAP_SIZE - 1 or _y_ == 0 or _y_ == MAP_SIZE - 1:
                         row_string += "#"
                     else:
-                        # Random obstacles with 5% chance
+                        # ranm obstcles with 5% chance
                         if random.random() < 0.05:
                             row_string += "#"
                         else:
                             row_string += " "
                 world_map.append(row_string)
-            # Floor texture pattern
+            # ftp
             FLOOR_TEXTURE = [
                 "=Saswat===||",
                 "====||====||",
@@ -1601,14 +1346,14 @@ def fsys(ctx,args):
             map_width = len(world_map[0])
             map_height = len(world_map)
 
-            # --- Player State ---
+            # currnt state of the player
             player_x = 3.5
             player_y = 3.5
             player_angle = 0.0
 
             player_speed = 0.0
             player_pitch = 0.0
-            player_altitude = 0.5  # 0.5 is standard eye level
+            player_altitude = 0.5  # 0.5 is standard eye level (ty wikipedia <3)
 
             def cast_ray(ray_angle):
                 curr_x, curr_y = player_x, player_y
@@ -1619,33 +1364,30 @@ def fsys(ctx,args):
                     next_x = curr_x + math.cos(ray_angle) * step_distance
                     next_y = curr_y + math.sin(ray_angle) * step_distance
 
-                    # Check for collision with walls
+                    # check collision
                     if world_map[int(curr_y)][int(next_x)] == "#":
                         distance = math.sqrt((next_x - player_x) ** 2 + (curr_y - player_y) ** 2)
-                        return distance, True  # Hit "horizontal-ish" side
+                        return distance, True  #horizontlish hit
 
                     if world_map[int(next_y)][int(curr_x)] == "#":
                         distance = math.sqrt((curr_x - player_x) ** 2 + (next_y - player_y) ** 2)
-                        return distance, False  # Hit "vertical-ish" side
+                        return distance, False  # verticalish hit
 
                     curr_x = next_x
                     curr_y = next_y
 
-                # If no hit within max steps
+                # no hit then return the max steps lol
                 return 50, True
 
             def draw_minimap(screen_buffer):
-                scale = 2  # Scale of the minimap pixels
-                view_size = 16  # Area size to show on minimap
-
+                scale = 2  
+                view_size = 16  
                 minimap_w = view_size * scale
                 minimap_h = view_size * scale
 
-                # Position of minimap on screen (top right)
                 screen_start_x = SCREEN_WIDTH - minimap_w - 2
                 screen_start_y = 2
 
-                # Top-left corner of the map area to render
                 start_map_x = int(player_x) - view_size // 2
                 start_map_y = int(player_y) - view_size // 2
 
@@ -1654,11 +1396,13 @@ def fsys(ctx,args):
                         mx = start_map_x + dx
                         my = start_map_y + dy
 
-                        # Determine map cell character
+                        
                         if 0 <= mx < map_width and 0 <= my < map_height:
                             char_at_pos = world_map[my][mx]
+
                             if char_at_pos == "#":
                                 display_char = "#"
+
                             elif char_at_pos == "$":
                                 display_char = "%"
                             else:
@@ -1666,7 +1410,7 @@ def fsys(ctx,args):
                         else:
                             display_char = " "
 
-                        # Draw scaled pixel on screen buffer
+                       
                         for sy in range(scale):
                             for sx in range(scale):
                                 scx = screen_start_x + dx * scale + sx
@@ -1674,7 +1418,7 @@ def fsys(ctx,args):
                                 if 0 <= scx < SCREEN_WIDTH and 0 <= scy < SCREEN_HEIGHT:
                                     screen_buffer[scy][scx] = display_char
 
-                # Draw Player position on minimap
+               
                 rel_player_x = (player_x - start_map_x) * scale
                 rel_player_y = (player_y - start_map_y) * scale
 
@@ -1684,7 +1428,7 @@ def fsys(ctx,args):
                 if 0 <= px_on_screen < SCREEN_WIDTH and 0 <= py_on_screen < SCREEN_HEIGHT:
                     screen_buffer[py_on_screen][px_on_screen] = "P"
 
-                # Draw direction indicator
+                
                 dir_x = int(px_on_screen + math.cos(player_angle) * scale)
                 dir_y = int(py_on_screen + math.sin(player_angle) * scale)
                 if 0 <= dir_x < SCREEN_WIDTH and 0 <= dir_y < SCREEN_HEIGHT:
@@ -1721,7 +1465,7 @@ def fsys(ctx,args):
                     break
                 if started:
                     score += 0.01
-                # Input Handling
+                # input handling with mscvcrt
                 while msvcrt.kbhit():
                     key = msvcrt.getch().decode().lower()
                     if key == "a":
@@ -1736,28 +1480,28 @@ def fsys(ctx,args):
                     if key == "s":
                         player_speed = max(player_speed - 0.001, -0.1)
                         started = True
-                    # Altitude controls (Q/E)
+                    
                     if key == "q":
                         player_altitude = min(player_altitude + 0.02, 0)
                     if key == "e":
                         player_altitude = max(player_altitude - 0.02, -1.0)
-                        # Pitch controls (I/K)
+                        
                     if key == "i":
                         player_pitch = min(player_pitch + 2.0, 100.0)
                     if key == "k":
                         player_pitch = max(player_pitch - 2.0, -100.0)
-                    # Radio: Press 'R' to change song
+                   
                     if key == "r":
-                        radio[0] = radio[0] + 1  # Go to next song
-                        if radio[0] >= len(songs):  # If we're past the last song
-                            radio[0] = 0  # Go back to first song
+                        radio[0] = radio[0] + 1  # next song
+                        if radio[0] >= len(songs):  # if last song then loops abck
+                            radio[0] = 0  
                         try:
-                            pygame.mixer.music.stop()  # Stop current song
-                            pygame.mixer.music.load(songs[radio[0]])  # Load new song
-                            pygame.mixer.music.play(-1)  # Play new song on loop
+                            pygame.mixer.music.stop()  
+                            pygame.mixer.music.load(songs[radio[0]]) 
+                            pygame.mixer.music.play(-1) 
                         except Exception as e:
                             print(f"Radio Error: {e}")
-                    # Exit key
+                
                     if key == "x":
                         clear_console()
                         print("\n\nExiting flight simulator...")
@@ -1766,7 +1510,7 @@ def fsys(ctx,args):
                             print(f"Highest Score This Session: {max(scores)}")
                         time.sleep(1)
                         return  # Exit the fsys function completely
-                    # Return to BBOS
+                   
                     if key == "z":
                         clear_console()
                         print("\n\ngoing back...")
@@ -1775,7 +1519,7 @@ def fsys(ctx,args):
                             print(f"Highest Score This Session: {max(scores)}")
                         time.sleep(1)
                         scrollart.math_func(max_rows=150)
-                        os.system("cls")
+                        clear_screen()
                         print("\n" * 5)
                         print(""" ▄▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄ 
 ▐░░░░░░░░░░▌ ▐░░░░░░░░░░▌ ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
@@ -1791,50 +1535,52 @@ def fsys(ctx,args):
                         print("\n" * 5)
                         return  # Exit and return to BBOS
 
-                # Update Player Position
+                
                 player_x += math.cos(player_angle) * player_speed
+
                 player_y += math.sin(player_angle) * player_speed
-                player_altitude += (player_pitch * 0.001) * (player_speed / 6)  # Altitude changes with pitch and speed
+
+                player_altitude += (player_pitch * 0.001) * (player_speed / 6)  
 
                 if int((player_altitude) * 10000) > 1000:
                     player_altitude -= 0.00002
 
-                # Initialize screen buffer
+                # ily if u are reading this
                 screen_buffer = [[" "] * SCREEN_WIDTH for _ in range(SCREEN_HEIGHT)]
 
-                # Calculate horizon line based on pitch
+                # calcs the horizntl line based on pitch
                 horizon_line = int(SCREEN_HEIGHT / 2 + player_pitch)
 
-                # --- Raycasting & Rendering ---
+                # raycasting
                 for col in range(SCREEN_WIDTH):
-                    # Calculate ray angle
+                    #the ray angle
                     ray_angle = player_angle - FOV / 2 + (col / SCREEN_WIDTH) * FOV
 
                     dist, is_horizontal_hit = cast_ray(ray_angle)
 
-                    # Avoid division by zero
+                    # this one line avoids the division by zero error which had bugged me for a day
                     if dist == 0: dist = 0.001
 
-                    # Calculate line height based on distance
+                    # the distance between the player and the wall provides the height of the wall
                     line_height = int(SCREEN_HEIGHT / (dist * 0.1 + 0.01))
 
-                    # Calculate wall top and bottom positions relative to horizon
+                    # gives back the top and bottom of the wall wrt the player
                     wall_top = int(horizon_line - (1.0 - player_altitude) * line_height)
                     wall_bottom = int(horizon_line + (player_altitude) * line_height)
 
-                    # Clamp to screen bounds
+                    # if the terminal is a grid then this bounds the clamps of the corner
                     draw_top = max(0, min(SCREEN_HEIGHT, wall_top))
                     draw_bottom = max(0, min(SCREEN_HEIGHT, wall_bottom))
 
-                    # Draw the Wall Strip
+                    # inspired by the doom (gives the // texture to walls)
                     for row in range(draw_top, draw_bottom):
-                        # Simple shading based on side hit
+                        
                         if is_horizontal_hit:
                             block_char = "█"
                         else:
                             block_char = "▓"
 
-                        # Fog / Distance shading
+                        # fog shading
                         if dist <= 4:
                             screen_buffer[row][col] = block_char
                         elif dist <= 30:
@@ -1844,31 +1590,31 @@ def fsys(ctx,args):
                         else:
                             screen_buffer[row][col] = "░"
 
-                # --- Floor Casting / Mode 7-ish effect ---
+                #floor csating
                 for row in range(horizon_line + 1, SCREEN_HEIGHT):
                     if row == horizon_line: continue
 
                     p = row - horizon_line
 
-                    # Calculate row distance
+            
                     row_distance = (player_altitude * SCREEN_HEIGHT) / (p * 0.1 + 0.001)
 
                     for col in range(SCREEN_WIDTH):
                         ray_angle = player_angle - FOV / 2 + (col / SCREEN_WIDTH) * FOV
 
-                        # Floor coordinates
+                        #the floor coords
                         floor_x = player_x + math.cos(ray_angle) * row_distance
                         floor_y = player_y + math.sin(ray_angle) * row_distance
 
-                        # Texture mapping
+                        #texture mapping (pls dont ask me about this i just read it online and have l;itle idea )
                         tex_x = int(floor_x * len(FLOOR_TEXTURE[0])) % len(FLOOR_TEXTURE[0])
                         tex_y = int(floor_y * len(FLOOR_TEXTURE)) % len(FLOOR_TEXTURE)
 
-                        # Only draw floor if there's no wall obscuring it (simple z-check based on buffer emptiness)
+                        # draws the floor if no wall is between
                         if screen_buffer[row][col] == " ":
                             screen_buffer[row][col] = FLOOR_TEXTURE[tex_y][tex_x]
 
-                # Draw HUD elements
+                # mc like hud elmnts
                 draw_minimap(screen_buffer)
 
                 draw_text_on_screen(screen_buffer, 2, 2, f"ALT:   {int((player_altitude) * 10000):.0f}ft")
@@ -1877,7 +1623,7 @@ def fsys(ctx,args):
                 draw_text_on_screen(screen_buffer, 2, 5, f"ANGLE: {int(player_angle * 180 / math.pi) % 360}")
                 draw_text_on_screen(screen_buffer, 2, 6, f"SCORE: {int(score)}")
 
-                # Render to console
+                # shows the casting in the terminal baby!
                 clear_console()
                 sys.stdout.write("\n".join("".join(row) for row in screen_buffer))
                 sys.stdout.flush()
@@ -1887,6 +1633,126 @@ def fsys(ctx,args):
             time.sleep(0.0001)
             continue
 
+def akpr(ctx, args):
+    import shutil
+    import math
+    import time
+
+    while True:
+        size = shutil.get_terminal_size()
+        WIDTH = size.columns
+        HEIGHT = size.lines
+
+
+        x = WIDTH // 2
+        y = HEIGHT - 3
+
+        vy_input = input("Initial upward velocity (or z/exit to return): ")
+        if vy_input.lower() in ['z', 'exit']:
+            print("going back...")
+            scrollart.math_func(max_rows=150)
+            clear_screen()
+
+
+            print("\n" * 5)
+            print(""" ▄▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄ 
+▐░░░░░░░░░░▌ ▐░░░░░░░░░░▌ ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
+▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀▀▀ 
+▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌          
+▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌▐░▌       ▐░▌▐░█▄▄▄▄▄▄▄▄▄ 
+▐░░░░░░░░░░▌ ▐░░░░░░░░░░▌ ▐░▌       ▐░▌▐░░░░░░░░░░░▌
+▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░▌       ▐░▌ ▀▀▀▀▀▀▀▀▀█░▌
+▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌          ▐░▌
+▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌ ▄▄▄▄▄▄▄▄▄█░▌
+▐░░░░░░░░░░▌ ▐░░░░░░░░░░▌ ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
+ ▀▀▀▀▀▀▀▀▀▀   ▀▀▀▀▀▀▀▀▀▀   ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀ """.center(100))
+            print("\n" * 5)
+            return
+
+        vy = float(vy_input)
+
+
+        g = 0.3
+        k = 0.02         
+        scale = 20        
+        dt = 0.2
+
+        rocket = [
+            "  ^  ",
+            " ### ",
+            "#^#^#",
+            " ### ",
+            "  #  ",
+            "  #  ",
+            "|||||"
+        ]
+
+        height = []
+        trail = []
+
+        while True:
+
+        
+            screen = []
+            for j in range(HEIGHT):
+                row = []
+                for i in range(WIDTH):
+                    row.append(' ')
+                screen.append(row)
+
+        
+            altitude = HEIGHT - y
+
+            
+            density = math.exp(-altitude / scale)
+            drag = -k * vy * abs(vy) * density
+
+            print("Density:", round(density, 4), " Drag:", round(drag, 4))
+
+            ay = g + drag
+
+            vy = vy + ay * dt
+
+            y = y + vy * dt
+
+            trail.append(y)
+            if len(trail) > 40:
+                trail.pop(0)
+
+            for i in range(WIDTH):
+                screen[HEIGHT-1][i] = '-'
+
+            for ty in trail:
+                iy = int(ty)
+                if 0 <= iy < HEIGHT:
+                    screen[iy][x-2] = '.'#
+            
+            #for rocket
+            for ry in range(len(rocket)):
+                for rx in range(len(rocket[0])):
+                    ch = rocket[ry][rx]
+                    if ch != ' ':
+                        py = iy + ry - 2
+                        px = x + rx -4
+                        if 0 <= px < WIDTH and 0 <= py < HEIGHT:
+                            screen[py][px] = ch
+
+            for row in screen:
+                for c in row:
+                    print(c, end='')
+                print()
+
+            print("height:", round(altitude,2), "velocity:", round(vy,2))
+
+            height.append(altitude)
+
+
+            if y >= HEIGHT-4:
+                print("LANDED")
+                print("MAX HEIGHT REACHED:", round(max(height),2))
+                break
+        
+            time.sleep(0.05)
 
 
 COMMANDS = {
@@ -1899,12 +1765,12 @@ COMMANDS = {
     "fsys": fsys,
     "rsg": randomsoundgen,
     "wpm": typing_test,
-    "sudoku": simple_sudoku,
     "screensaver": screensaver,
     "easteregg": easter_egg,
     "clear": clear_terminal,
     "physics": physics_calc,
-    "baseconv": base_converter
+    "baseconv": base_converter,
+    "akpr": akpr
 }
 CMD_DESCRIPTIONS = {
     "%pr": "Priority or change directory",
@@ -1918,7 +1784,8 @@ CMD_DESCRIPTIONS = {
     "screensaver": "Animated screensaver with scrollart - press ENTER or 'z' to exit",
     "clear": "Clear the terminal screen",
     "physics": "Physics calculator for projectile motion and fluid dynamics",
-    "baseconv": "Number base converter (Binary, Decimal, Hexadecimal, Octal)"
+    "baseconv": "Number base converter (Binary, Decimal, Hexadecimal, Octal)",
+    "akpr": "Rocket simulation with atmospheric drag and gravity physics"
 }
 
 def parse_and_execute(ctx, user_input):
@@ -1965,7 +1832,7 @@ def main():
     for msg in boot_messages:
         time.sleep(1)
         print(msg)
-    os.system("cls")
+    clear_screen()
 
     '''behold my scrollart symbphonium or however the flip it is spelled lmao'''
     scrollart.ducklings(max_rows=70)
@@ -1975,7 +1842,7 @@ def main():
     scrollart.bundfc(max_rows=150)
     scrollart.forth_and_back(max_rows=100)
 
-    os.system("cls")
+    clear_screen()
     print("\n"*5)
     print(""" ▄▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄ 
 ▐░░░░░░░░░░▌ ▐░░░░░░░░░░▌ ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
@@ -2015,4 +1882,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
